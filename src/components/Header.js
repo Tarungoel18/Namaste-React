@@ -1,15 +1,21 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState ,useContext} from "react";
 import { LOGO_URL } from "../utils/constants";
 import { Link } from "react-router-dom";
 import useOnlineStatus from "../utils/useOnlineStatus";
-
+import UserContext from "../utils/UserContext";
+import { useSelector } from "react-redux";
 const Header = () => {
   const [btn, setBtn] = useState("Login");
   const onlineStatus = useOnlineStatus();
-
+  const {userInfo} = useContext(UserContext)
   useEffect(() => {
     console.log("Rendered Header");
   });
+
+  const cartItems = useSelector((store) =>    store.cart.items)
+  console.log(cartItems)
+  // console.log("Header component rendered");
+
 
   return (
     <div className="flex justify-between items-center bg-pink-50 shadow-xl h-24">
@@ -46,9 +52,12 @@ const Header = () => {
             </Link>
           </li>
           <li className="px-4">
-            <span className="hover:text-pink-600 hover:bg-pink-100 px-2 py-1 rounded transition duration-200">
-              Contact
-            </span>
+            <Link
+            to = "/cart" 
+             className="hover:text-pink-600 hover:bg-pink-100 px-2 py-1 rounded transition duration-200">
+              Cart -{cartItems.length}
+              {/* Cart */}
+            </Link>
           </li>
           <li
             className="px-4 cursor-pointer hover:text-pink-600 hover:bg-pink-100 px-2 py-1 rounded transition duration-200"
@@ -58,6 +67,8 @@ const Header = () => {
           >
             {btn}
           </li>
+
+          <li className="text-xl font-bold">{userInfo}</li>
         </ul>
       </div>
     </div>
